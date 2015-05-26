@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">My Toolbar app</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="logo_description">Toolbar Elephant Logo</string>
+    <string name="navigation_icon_description">Toolbar back navigation icon</string>
+    <string name="navigation_icon_two_description">Bottom Toolbar Ghost Navigation icon</string>
+    <string name="bottom_toolbar_logo">Bottom Toolbar logo</string>
+    <string name="wifi">WiFi Menu Item</string>
+
+</resources>

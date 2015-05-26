@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BLESample</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="bluetoothOn">Enable Bluetooth</string>
+    <string name="scanLeDevices">Scan BLE Devices</string>
+    <string name="stopScanningLeDevices">Stop Scanning</string>
+</resources>

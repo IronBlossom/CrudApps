@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="4.0"
+              android:background="@color/app_background"
+              android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/marketName"
+            android:textSize="22sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="CSE"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/marketPoint"
+            android:textSize="25sp"
+            android:layout_alignParentBottom="true"
+            android:text="170002.22"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/indicatorView"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:text="^"
+            android:layout_toRightOf="@id/marketPoint"
+            android:layout_toEndOf="@id/marketPoint"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/indicatorView"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/indicatorView"
+            android:weightSum="2"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="+47.88"
+                android:textColor="#ff459b76"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="+0.88%"
+                android:textColor="#ff459b76"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/timeAndStat"
+            android:textSize="12sp"
+            android:textColor="#A4A4A4"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="12121212121"
+            android:layout_alignParentEnd="true"
+            android:gravity="end|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="CSE50"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:layout_centerHorizontal="true"
+                android:text="4899.66"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:text="+21.33\n+0.88%"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#ff459b76"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="CSE30"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="22sp"
+                android:layout_centerHorizontal="true"
+                android:text="1027.84"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:text="+16.5\n+0.05%"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#ff459b76"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

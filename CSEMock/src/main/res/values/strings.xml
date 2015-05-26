@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CSEMock</string>
+    <string name="action_settings">Settings</string>
+    <string name="dummyText">Dummy Abcdefghijklmnopqrstuvwxyz</string>
+
+    <!--Title-->
+    <string name="title_overview">Overview</string>
+    <string name="title_marketInfo">MarketInfo</string>
+    <string name="title_watchlist">Watchlist</string>
+    <string name="title_portfolio">tPortfolio</string>
+</resources>

@@ -1,0 +1,8 @@
+include 'BLEClient'
+include 'BLESample'
+include 'BluetoothGatt'
+include 'BluetoothLeGatt'
+//include  'PDFRenderer'
+//include 'CSEMock'
+//include 'NDKSample'
+include ':rN4020DiewithService'

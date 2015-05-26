@@ -1,0 +1,11 @@
+.DS_Store
+*/build
+*/.gitignore
+.gradle
+.idea
+.navigation
+/build
+/gen
+*.iml
+gradle*
+local.properties

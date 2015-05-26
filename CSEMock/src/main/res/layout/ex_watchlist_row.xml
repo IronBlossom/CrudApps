@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/shareName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:text="ACI"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/companyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        android:maxLines="1"
+        android:layout_toLeftOf="@+id/alertDayContainer"
+        android:layout_toStartOf="@+id/alertDayContainer"
+        android:layout_below="@id/shareName"
+        android:ellipsize="end"
+        android:text="ACI Limited"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/totalPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="21sp"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/sharePointHiLo"
+        android:ellipsize="end"
+        android:text="385"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/sharePointHiLo"
+        android:layout_marginLeft="120dp"
+        android:layout_marginStart="120dp"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:layout_below="@+id/companyName"
+        android:text="-6.1\n-1.56%"
+        android:gravity="left"
+        android:textColor="#ff0000"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/alertDayContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sharePointHiLo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/alertTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Alert\nHi:430\nLo:285"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/dayTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Day(Hi/Lo)\n393.9\n381.1"
+            android:gravity="right"
+            android:textColor="@android:color/darker_gray"/>
+    </LinearLayout>
+</RelativeLayout>
