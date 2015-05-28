@@ -37,13 +37,13 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => rN4020DiewithService\src\main\AndroidManifest.xml
-* assets\ => rN4020DiewithService\src\main\assets
-* res\ => rN4020DiewithService\src\main\res\
-* src\ => rN4020DiewithService\src\main\java\
-* src\.DS_Store => rN4020DiewithService\src\main\resources\.DS_Store
-* src\com\.DS_Store => rN4020DiewithService\src\main\resources\com\.DS_Store
-* src\com\microchip\.DS_Store => rN4020DiewithService\src\main\resources\com\microchip\.DS_Store
+* AndroidManifest.xml => explorer16MLDP\src\main\AndroidManifest.xml
+* assets\ => explorer16MLDP\src\main\assets
+* res\ => explorer16MLDP\src\main\res\
+* src\ => explorer16MLDP\src\main\java\
+* src\.DS_Store => explorer16MLDP\src\main\resources\.DS_Store
+* src\com\.DS_Store => explorer16MLDP\src\main\resources\com\.DS_Store
+* src\com\microchip\.DS_Store => explorer16MLDP\src\main\resources\com\microchip\.DS_Store
 
 Missing Android Support Repository:
 -----------------------------------
