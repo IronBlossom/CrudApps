@@ -31,8 +31,6 @@
 
 package com.microchip.rn4020die2;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -54,6 +52,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 /**
  * For a given BLE device, this Activity provides the user interface to connect,
  * display data, and display GATT services and characteristics supported by the
@@ -62,26 +62,96 @@ import android.widget.Toast;
  */
 public class DeviceControlActivity extends Activity {
 
-    private final static String TAG = DeviceControlActivity.class.getSimpleName();      //Get name of activity to tag debug and warning messages
-
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";                      //Name passed by intent that lanched this activity
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";                //MAC address passed by intent that lanched this activity
-
-    private static final String MLDP_PRIVATE_SERVICE =      "00035b03-58e6-07dd-021a-08123a000300"; //Private service for Microchip MLDP
-    public static final String MLDP_DATA_PRIVATE_CHAR =    "00035b03-58e6-07dd-021a-08123a000301"; //Characteristic for MLDP Data, properties - notify, write
+    public static final String MLDP_DATA_PRIVATE_CHAR = "00035b03-58e6-07dd-021a-08123a000301"; //Characteristic for MLDP Data, properties - notify, write
+    public static final String CHARACTERISTIC_NOTIFICATION_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";    //Special UUID for descriptor needed to enable notifications
+    private final static String TAG = DeviceControlActivity.class.getSimpleName();      //Get name of activity to tag debug and warning messages
+    private static final String MLDP_PRIVATE_SERVICE = "00035b03-58e6-07dd-021a-08123a000300"; //Private service for Microchip MLDP
     private static final String MLDP_CONTROL_PRIVATE_CHAR = "00035b03-58e6-07dd-021a-08123a0003ff"; //Characteristic for MLDP Control, properties - read, write
-    public static final String CHARACTERISTIC_NOTIFICATION_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";	//Special UUID for descriptor needed to enable notifications
-    
     private BluetoothLeService mBluetoothLeService;                                     //Service to handle BluetoothGatt connection to the RN4020 module
+    // ----------------------------------------------------------------------------------------------------------------
+    // Code to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {        //Create new ServiceConnection interface to handle connection and disconnection
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {    //Service connects
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService(); //Get a link to the service
+            if (!mBluetoothLeService.initialize()) {                                    //See if the service did not initialize properly
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();                                                                //End the application
+            }
+            mBluetoothLeService.connect(mDeviceAddress);                                //Connects to the device selected and passed to us by the DeviceScanActivity
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {                //Service disconnects
+            mBluetoothLeService = null;                                                 //Not bound to a service
+        }
+    };
     private BluetoothGattCharacteristic mDataMDLP, mControlMLDP;                        //The BLE characteristic used for MLDP data transfers
     private Handler mHandler;                                                           //Handler used to send die roll after a time delay
-
     private TextView mConnectionState, redDieText;                                      //TextViews to show connection state and die roll number on the display
     private Button redDieButton;                                                        //Button to initiate a roll of the die
     private String incomingMessage;                                                     //String to hold the incoming message from the MLDP characteristic
     private String mDeviceName, mDeviceAddress;                                         //Strings for the Bluetooth device name and MAC address
     private boolean mConnected = false;                                                 //Indicator of an active Bluetooth connection
     private Die redDie;                                                                 //Die object for rolling a number from 1 to 6
+    // ----------------------------------------------------------------------------------------------------------------
+    // BroadcastReceiver handles various events fired by the BluetoothLeService service.
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();                                   //Get the action that was broadcast by the intent that was received
+
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {              //Service has connected to BLE device
+                mConnected = true;                                                      //Record the new connection state
+                updateConnectionState(R.string.connected);                              //Update the display to say "Connected"
+                invalidateOptionsMenu();                                                //Force the Options menu to be regenerated to show the disconnect option
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {        //Service has disconnected from BLE device
+                mConnected = false;                                                     //Record the new connection state
+                updateConnectionState(R.string.disconnected);                           //Update the display to say "Disconnected"
+                invalidateOptionsMenu();                                                //Force the Options menu to be regenerated to show the connect option
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) { //Service has discovered GATT services on BLE device
+                findMldpGattService(mBluetoothLeService.getSupportedGattServices());    //Show all the supported services and characteristics on the user interface
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {         //Service has found new data available on BLE device
+                String dataValue = intent.getStringExtra(BluetoothLeService.EXTRA_DATA); //Get the value of the characteristic
+                processIncomingPacket(dataValue);                                       //Process the data that was received
+            }
+
+            //For information only. This application sends small packets infrequently and does not need to know what the previous write completed
+            else if (BluetoothLeService.ACTION_DATA_WRITTEN.equals(action)) {            //Service has found new data available on BLE device
+            }
+        }
+    };
+    // ----------------------------------------------------------------------------------------------------------------
+    // Listener for the roll red die button
+    private final Button.OnClickListener redDieButtonClickListener = new Button.OnClickListener() {
+
+        public void onClick(View view) {                                                //Button was clicked
+            updateDieState();                                                           //Update the state of the die with a new roll and send over BLE
+        }
+    };
+    // ----------------------------------------------------------------------------------------------------------------
+    // Listener for the red die text
+    private final TextView.OnClickListener redDieTextClickListener = new TextView.OnClickListener() {
+
+        public void onClick(View view) {                                                //Die text was clicked
+            updateDieState();                                                           //Update the state of the die with a new roll and send over BLE
+        }
+    };
+
+    // ----------------------------------------------------------------------------------------------------------------
+    // Intent filter to add Intent values that will be broadcast by the BluetoothLeService to the mGattUpdateReceiver BroadcastReceiver
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();                           //Create intent filter for actions received by broadcast receiver
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_WRITTEN);
+        return intentFilter;
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Activity launched
@@ -91,7 +161,7 @@ public class DeviceControlActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.die_screen);                                            //Show the screen with the die number and button
 
-        final Intent intent = getIntent();                                              //Get the Intent that launched this activity 
+        final Intent intent = getIntent();                                              //Get the Intent that launched this activity
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);                        //Get the BLE device name from the Intent
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);                  //Get the BLE device address from the Intent
         mHandler = new Handler();                                                       //Create Handler to delay sending first roll after new connection
@@ -105,19 +175,19 @@ public class DeviceControlActivity extends Activity {
         redDieText.setOnClickListener(redDieTextClickListener);                         //Set onClickListener for when text is pressed
         redDieButton = (Button) findViewById(R.id.buttonRedDie);                        //Button that will roll the die when clicked
         redDieButton.setOnClickListener(redDieButtonClickListener);                     //Set onClickListener for when button is pressed
-        
-        incomingMessage = new String();                                                 //Create new string to hold incoming message data
-        
-        this.getActionBar().setTitle(mDeviceName);                                      //Set the title of the ActionBar to the name of the BLE device 
-        this.getActionBar().setDisplayHomeAsUpEnabled(true);                            //Make home icon clickable with < symbol on the left 
 
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);          //Create Intent to start the BluetoothLeService 
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);           //Create and bind the new service to mServiceConnection object that handles service connect and disconnect 
+        incomingMessage = new String();                                                 //Create new string to hold incoming message data
+
+        this.getActionBar().setTitle(mDeviceName);                                      //Set the title of the ActionBar to the name of the BLE device
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);                            //Make home icon clickable with < symbol on the left
+
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);          //Create Intent to start the BluetoothLeService
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);           //Create and bind the new service to mServiceConnection object that handles service connect and disconnect
     }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Activity resumed
-    // Register the GATT receiver 
+    // Register the GATT receiver
     @Override
     protected void onResume() {
         super.onResume();
@@ -154,8 +224,7 @@ public class DeviceControlActivity extends Activity {
         if (mConnected) {                                                               //See if connected
             menu.findItem(R.id.menu_connect).setVisible(false);                         // then dont show disconnect option
             menu.findItem(R.id.menu_disconnect).setVisible(true);                       // and do show connect option
-        }
-        else {                                                                          //If not connected    
+        } else {                                                                          //If not connected
             menu.findItem(R.id.menu_connect).setVisible(true);                          // then show connect option
             menu.findItem(R.id.menu_disconnect).setVisible(false);                      // and don't show disconnect option
         }
@@ -172,7 +241,7 @@ public class DeviceControlActivity extends Activity {
                 mBluetoothLeService.connect(mDeviceAddress);                            //Call method to connect to our selected device
                 return true;
             case R.id.menu_disconnect:                                                  //Option to Disconnect chosen
-                mBluetoothLeService.disconnect();                                       //Call method to disconnect 
+                mBluetoothLeService.disconnect();                                       //Call method to disconnect
                 return true;
             case android.R.id.home:                                                     //Option to go back was chosen
                 onBackPressed();                                                        //Execute functionality of back button
@@ -180,72 +249,6 @@ public class DeviceControlActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    // ----------------------------------------------------------------------------------------------------------------
-    // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {		//Create new ServiceConnection interface to handle connection and disconnection
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {	//Service connects
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService(); //Get a link to the service
-            if (!mBluetoothLeService.initialize()) {                                    //See if the service did not initialize properly
-                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();																//End the application
-            }
-            mBluetoothLeService.connect(mDeviceAddress);                                //Connects to the device selected and passed to us by the DeviceScanActivity
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {                //Service disconnects
-            mBluetoothLeService = null;                                                 //Not bound to a service
-        }
-    };
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Intent filter to add Intent values that will be broadcast by the BluetoothLeService to the mGattUpdateReceiver BroadcastReceiver
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();                           //Create intent filter for actions received by broadcast receiver
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_WRITTEN);
-        return intentFilter;
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // BroadcastReceiver handles various events fired by the BluetoothLeService service.
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();                                   //Get the action that was broadcast by the intent that was received
-
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {              //Service has connected to BLE device
-                mConnected = true;                                                      //Record the new connection state
-                updateConnectionState(R.string.connected);                              //Update the display to say "Connected"
-                invalidateOptionsMenu();                                                //Force the Options menu to be regenerated to show the disconnect option
-            } 
-            
-            else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {		//Service has disconnected from BLE device
-                mConnected = false;                                                     //Record the new connection state
-                updateConnectionState(R.string.disconnected);                           //Update the display to say "Disconnected"
-                invalidateOptionsMenu();                                                //Force the Options menu to be regenerated to show the connect option
-            } 
-            
-            else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) { //Service has discovered GATT services on BLE device
-                findMldpGattService(mBluetoothLeService.getSupportedGattServices()); 	//Show all the supported services and characteristics on the user interface
-            } 
-            
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {         //Service has found new data available on BLE device
-                String dataValue = intent.getStringExtra(BluetoothLeService.EXTRA_DATA); //Get the value of the characteristic
-                processIncomingPacket(dataValue);                                       //Process the data that was received
-            }
-            
-            //For information only. This application sends small packets infrequently and does not need to know what the previous write completed
-            else if (BluetoothLeService.ACTION_DATA_WRITTEN.equals(action)) {			//Service has found new data available on BLE device
-            }
-        }
-    };
 
     // ----------------------------------------------------------------------------------------------------------------
     // Update text with connection state
@@ -273,7 +276,7 @@ public class DeviceControlActivity extends Activity {
             }
         });
     }
-    
+
     // ----------------------------------------------------------------------------------------------------------------
     // Look for message with switch pressed indicator "->S1\n\r"
     private void processIncomingPacket(String data) {
@@ -283,36 +286,17 @@ public class DeviceControlActivity extends Activity {
         if (incomingMessage.length() >= 6 && incomingMessage.contains("=>S") && incomingMessage.contains("\r\n")) { //See if we have the right nessage
             indexStart = incomingMessage.indexOf("=>S");                                //Get the position of the matching characters
             indexEnd = incomingMessage.indexOf("\r\n");                                 //Get the position of the end of frame "\r\n"
-            if (indexEnd - indexStart == 4) {                                           //Check that the packet does not have missing or extra characters 
+            if (indexEnd - indexStart == 4) {                                           //Check that the packet does not have missing or extra characters
                 switchState = incomingMessage.charAt(indexStart + 3);                   //Get the character that represents the switch being pressed
                 if (switchState == '1') {                                               //Is it a "1"
                     updateDieState();                                                   // if so then update the state of the die with a new roll and send over BLE
                 }
             }
-            incomingMessage = incomingMessage.substring(indexEnd + 2);                  //Thow away everything up to and including "\n\r" 
-        }
-        else if (incomingMessage.contains("\r\n")) {                                    //See if we have an end of frame "\r\n" without a valid message
-            incomingMessage = incomingMessage.substring(incomingMessage.indexOf("\r\n") + 2); //Thow away everything up to and including "\n\r" 
+            incomingMessage = incomingMessage.substring(indexEnd + 2);                  //Thow away everything up to and including "\n\r"
+        } else if (incomingMessage.contains("\r\n")) {                                    //See if we have an end of frame "\r\n" without a valid message
+            incomingMessage = incomingMessage.substring(incomingMessage.indexOf("\r\n") + 2); //Thow away everything up to and including "\n\r"
         }
     }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Listener for the roll red die button
-    private final Button.OnClickListener redDieButtonClickListener = new Button.OnClickListener() {
-
-        public void onClick(View view) {                                                //Button was clicked
-            updateDieState();                                                           //Update the state of the die with a new roll and send over BLE
-        }
-    };
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Listener for the red die text
-    private final TextView.OnClickListener redDieTextClickListener = new TextView.OnClickListener() {
-
-        public void onClick(View view) {                                                //Die text was clicked
-            updateDieState();                                                           //Update the state of the die with a new roll and send over BLE
-        }
-    };
 
     // ----------------------------------------------------------------------------------------------------------------
     // Iterate through the supported GATT Services/Characteristics to see if the MLDP srevice is supported
@@ -333,8 +317,7 @@ public class DeviceControlActivity extends Activity {
                     if (uuid.equals(MLDP_DATA_PRIVATE_CHAR)) {                          //See if it matches the UUID of the MLDP data characteristic
                         mDataMDLP = gattCharacteristic;                                 //If so then save the reference to the characteristic 
                         Log.d(TAG, "Found MLDP data characteristics");
-                    } 
-                    else if (uuid.equals(MLDP_CONTROL_PRIVATE_CHAR)) {                  //See if UUID matches the UUID of the MLDP control characteristic
+                    } else if (uuid.equals(MLDP_CONTROL_PRIVATE_CHAR)) {                  //See if UUID matches the UUID of the MLDP control characteristic
                         mControlMLDP = gattCharacteristic;                              //If so then save the reference to the characteristic 
                         Log.d(TAG, "Found MLDP control characteristics");
                     }
@@ -352,7 +335,7 @@ public class DeviceControlActivity extends Activity {
                         gattCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE); //If so then set the write type (write with no acknowledge) in the BluetoothGatt
                     }
                 }
-                break;                  
+                break;
             }
         }
         if (mDataMDLP == null) {                                                        //See if the MLDP data characteristic was not found

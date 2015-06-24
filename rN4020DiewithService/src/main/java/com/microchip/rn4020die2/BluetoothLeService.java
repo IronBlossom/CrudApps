@@ -46,18 +46,13 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
 import java.util.List;
 import java.util.UUID;
 
-    // ----------------------------------------------------------------------------------------------------------------
-    // A service for managing the connection and data communication with a GATT server on a Bluetooth LE device.
+// ----------------------------------------------------------------------------------------------------------------
+// A service for managing the connection and data communication with a GATT server on a Bluetooth LE device.
 public class BluetoothLeService extends Service {
-
-    private final static String TAG = BluetoothLeService.class.getSimpleName();         //Get name of service to tag debug and warning messages
-    private BluetoothManager mBluetoothManager;                                         //BluetoothManager used to get the BluetoothAdapter
-    private BluetoothAdapter mBluetoothAdapter;                                         //The BluetoothAdapter controls the BLE radio in the phone/tablet
-    private BluetoothGatt mBluetoothGatt;                                               //BluetoothGatt controls the Bluetooth communication link
-    private String mBluetoothDeviceAddress;                                             //Address of the connected BLE device
 
     public final static String ACTION_GATT_CONNECTED = "com.microchip.rn4020die2.ACTION_GATT_CONNECTED"; //Strings representing actions to broadcast to activities
     public final static String ACTION_GATT_DISCONNECTED = "com.microchip.rn4020die2.ACTION_GATT_DISCONNECTED";
@@ -65,38 +60,13 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_DATA_AVAILABLE = "com.microchip.rn4020die2.ACTION_DATA_AVAILABLE";
     public final static String ACTION_DATA_WRITTEN = "com.microchip.rn4020die2.ACTION_DATA_WRITTEN";
     public final static String EXTRA_DATA = "com.microchip.rn4020die2.EXTRA_DATA";
-
     public final static UUID UUID_MLDP_DATA_PRIVATE_CHARACTERISTIC = UUID.fromString(DeviceControlActivity.MLDP_DATA_PRIVATE_CHAR);
     public final static UUID UUID_CHARACTERISTIC_NOTIFICATION_CONFIG = UUID.fromString(DeviceControlActivity.CHARACTERISTIC_NOTIFICATION_CONFIG);
-
+    private final static String TAG = BluetoothLeService.class.getSimpleName();         //Get name of service to tag debug and warning messages
     private final IBinder mBinder = new LocalBinder();                                  //Binder for Activity that binds to this Service
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // An activity has bound to this service
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;                                                                 //Return LocalBinder when an Activity binds to this Service
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // An activity has unbound from this service 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        if (mBluetoothGatt != null) {                                                   //Check for existing BluetoothGatt connection
-            mBluetoothGatt.close();                                                     //Close BluetoothGatt coonection for proper cleanup
-            mBluetoothGatt = null;                                                      //No longer have a BluetoothGatt connection
-        }
-        return super.onUnbind(intent);
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // A Binder to return to an activity to let it bind to this service 
-    public class LocalBinder extends Binder {
-        BluetoothLeService getService() {
-            return BluetoothLeService.this;                                             //Return this instance of BluetoothLeService so clients can call its public methods
-        }
-    }
-
+    private BluetoothManager mBluetoothManager;                                         //BluetoothManager used to get the BluetoothAdapter
+    private BluetoothAdapter mBluetoothAdapter;                                         //The BluetoothAdapter controls the BLE radio in the phone/tablet
+    private BluetoothGatt mBluetoothGatt;                                               //BluetoothGatt controls the Bluetooth communication link
     // ----------------------------------------------------------------------------------------------------------------
     // Implements callback methods for GATT events that the app cares about.  For example: connection change and services discovered.
     // When onConnectionStateChange() is called with newState = STATE_CONNECTED then it calls mBluetoothGatt.discoverServices()
@@ -108,8 +78,7 @@ public class BluetoothLeService extends Service {
                 broadcastUpdate(ACTION_GATT_CONNECTED);                                 //Go broadcast an intent to say we are connected
                 Log.i(TAG, "Connected to GATT server, starting service discovery");
                 mBluetoothGatt.discoverServices();                                      //Discover services on connected BLE device
-            } 
-            else if (newState == BluetoothProfile.STATE_DISCONNECTED) {                 //See if we are not connected
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {                 //See if we are not connected
                 broadcastUpdate(ACTION_GATT_DISCONNECTED);                              //Go broadcast an intent to say we are disconnected
                 Log.i(TAG, "Disconnected from GATT server.");
             }
@@ -119,8 +88,7 @@ public class BluetoothLeService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {              //BLE service discovery complete
             if (status == BluetoothGatt.GATT_SUCCESS) {                                 //See if the service discovery was successful
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);                       //Go broadcast an intent to say we have discovered services
-            } 
-            else {                                                                      //Service discovery failed so log a warning
+            } else {                                                                      //Service discovery failed so log a warning
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
         }
@@ -146,6 +114,25 @@ public class BluetoothLeService extends Service {
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);                     //Go broadcast an intent with the characteristic data
         }
     };
+    private String mBluetoothDeviceAddress;                                             //Address of the connected BLE device
+
+    // ----------------------------------------------------------------------------------------------------------------
+    // An activity has bound to this service
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;                                                                 //Return LocalBinder when an Activity binds to this Service
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+    // An activity has unbound from this service
+    @Override
+    public boolean onUnbind(Intent intent) {
+        if (mBluetoothGatt != null) {                                                   //Check for existing BluetoothGatt connection
+            mBluetoothGatt.close();                                                     //Close BluetoothGatt coonection for proper cleanup
+            mBluetoothGatt = null;                                                      //No longer have a BluetoothGatt connection
+        }
+        return super.onUnbind(intent);
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Broadcast an intent with a string representing an action
@@ -156,23 +143,22 @@ public class BluetoothLeService extends Service {
 
     // ----------------------------------------------------------------------------------------------------------------
     // Broadcast an intent with a string representing an action an extra string with the data
-    // Modify this code for data that is not in a string format 
+    // Modify this code for data that is not in a string format
     private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);                                       //Create new intent to broadcast the action
-        if(action.equals(ACTION_DATA_AVAILABLE)) {                                      //See if we need to send data
-            if (UUID_MLDP_DATA_PRIVATE_CHARACTERISTIC.equals(characteristic.getUuid())) { //See if this is the correct characteristic 
+        if (action.equals(ACTION_DATA_AVAILABLE)) {                                      //See if we need to send data
+            if (UUID_MLDP_DATA_PRIVATE_CHARACTERISTIC.equals(characteristic.getUuid())) { //See if this is the correct characteristic
                 String dataValue = characteristic.getStringValue(0);                    //Get the data (in this case it is a string)
                 intent.putExtra(EXTRA_DATA, dataValue);                                 //Add the data string to the intent
             }
-        }
-        else {                                                                          //Did not get an action string we expect 
+        } else {                                                                          //Did not get an action string we expect
             Log.d(TAG, "Action: " + action);
         }
         sendBroadcast(intent);                                                          //Broadcast the intent
     }
 
     // ----------------------------------------------------------------------------------------------------------------
-    // Initialize by getting the BluetoothManager and BluetoothAdapter 
+    // Initialize by getting the BluetoothManager and BluetoothAdapter
     public boolean initialize() {
         if (mBluetoothManager == null) {                                                //See if we do not already have the BluetoothManager
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE); //Get the BluetoothManager
@@ -204,8 +190,7 @@ public class BluetoothLeService extends Service {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {                                             //See if we can connect with the existing BluetoothGatt to connect
                 return true;                                                            //Success
-            } 
-            else {
+            } else {
                 return false;                                                           //Were not able to connect
             }
         }
@@ -263,14 +248,13 @@ public class BluetoothLeService extends Service {
             return;
         }
         int test = characteristic.getProperties();                                      //Get the properties of the characteristic
-        if ((test & BluetoothGattCharacteristic.PROPERTY_WRITE) == 0 && (test & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) == 0) { //Check that the property is writable 
+        if ((test & BluetoothGattCharacteristic.PROPERTY_WRITE) == 0 && (test & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) == 0) { //Check that the property is writable
             return;
         }
 
         if (mBluetoothGatt.writeCharacteristic(characteristic)) {                       //Request the BluetoothGatt to do the Write
             Log.d(TAG, "writeCharacteristic successful");                               //The request was accepted, this does not mean the write completed
-        } 
-        else {
+        } else {
             Log.d(TAG, "writeCharacteristic failed");                                   //Write request was not accepted by the BluetoothGatt
         }
     }
@@ -285,7 +269,7 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);          //Enable notification and indication for the characteristic
 
-//        if (UUID_MLDP_DATA_PRIVATE_CHARACTERISTIC.equals(characteristic.getUuid())) { 
+//        if (UUID_MLDP_DATA_PRIVATE_CHARACTERISTIC.equals(characteristic.getUuid())) {
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID_CHARACTERISTIC_NOTIFICATION_CONFIG); //Get the descripter that enables notification on the server
         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);         //Set the value of the descriptor to enable notification
         mBluetoothGatt.writeDescriptor(descriptor);                                     //Write the descriptor
@@ -308,5 +292,13 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.writeDescriptor(descriptor);                                     //Write the descriptor
 //        }
     }
-    
+
+    // ----------------------------------------------------------------------------------------------------------------
+    // A Binder to return to an activity to let it bind to this service
+    public class LocalBinder extends Binder {
+        BluetoothLeService getService() {
+            return BluetoothLeService.this;                                             //Return this instance of BluetoothLeService so clients can call its public methods
+        }
+    }
+
 }

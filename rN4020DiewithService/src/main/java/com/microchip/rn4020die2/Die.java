@@ -34,32 +34,32 @@ package com.microchip.rn4020die2;
 
 public class Die {
 
-    private byte spots;							//Variable to represent the spots showing on the die
-    private static byte dieCount = 0;			//Variable to track the number of dice created
+    private static byte dieCount = 0;            //Variable to track the number of dice created
+    private byte spots;                            //Variable to represent the spots showing on the die
 
-//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 //Constructor creates a Die and initializes the value of spots
     public Die() {
         spots = (byte) (1 + (Math.random() * 6));
         dieCount++;
     }
 
-//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 //Method rolls the die and returns the new value of spots
     public byte Roll() {
         byte oldSpots = spots;
-        while (spots == oldSpots)				//Ensure each roll is different for demo - remove for a real die!
-        	spots = (byte) (1 + (Math.random() * 6));
+        while (spots == oldSpots)                //Ensure each roll is different for demo - remove for a real die!
+            spots = (byte) (1 + (Math.random() * 6));
         return spots;
     }
 
-//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 //Method returns the value of spots without rolling the die
     public byte View() {
         return spots;
     }
 
-//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 //Method returns the total number of die objects created
     public byte NumDie() {
         return dieCount;

@@ -51,36 +51,53 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
 public class DeviceScanActivity extends ListActivity {
-	private final static String TAG = DeviceScanActivity.class.getSimpleName();
-    private LeDeviceListAdapter mLeDeviceListAdapter;                                   //List adapter to hold list of BLE devices from a scan 
+    private final static String TAG = DeviceScanActivity.class.getSimpleName();
+    private static final int REQUEST_ENABLE_BT = 1;                                     //Constant to identify response from Activity that enables Bluetooth
+    private static final long SCAN_PERIOD = 10000;                                      //Length of time in milliseconds to scan for BLE devices
+    private LeDeviceListAdapter mLeDeviceListAdapter;                                   //List adapter to hold list of BLE devices from a scan
+    // ----------------------------------------------------------------------------------------------------------------
+    // Device scan callback. Bluetooth adapter calls this method when a new device is discovered during a scan.
+    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) { //Android calls method with Bluetooth device advertising information
+            runOnUiThread(new Runnable() {                                              //Create runnable that will add the device to the list adapter
+                @Override
+                public void run() {
+                    mLeDeviceListAdapter.addDevice(device);                             //Add the device to the list adapter that will show all the available devices
+                    Log.d(TAG, "Found BLE Device: " + device.getAddress().toString()); //Debug information to log the devices as they are found
+                    mLeDeviceListAdapter.notifyDataSetChanged();                        //Tell the list adapter that it needs to refresh the view
+                }
+            });
+        }
+    };
     private BluetoothAdapter mBluetoothAdapter;                                         //BluetoothAdapter represents the radio in the Smartphone
     private boolean mScanning;                                                          //Keep track of whether there is a scan in progress
     private Handler mHandler;                                                           //Handler used to stop scanning after time delay
-    private static final int REQUEST_ENABLE_BT = 1;                                     //Constant to identify response from Activity that enables Bluetooth
-    private static final long SCAN_PERIOD = 10000;                                      //Length of time in milliseconds to scan for BLE devices
 
     // ----------------------------------------------------------------------------------------------------------------
     // Activity launched
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getActionBar().setTitle(R.string.title_devices);                           //Display "BLE Device Scan" on the action bar      
+        this.getActionBar().setTitle(R.string.title_devices);                           //Display "BLE Device Scan" on the action bar
         mHandler = new Handler();                                                       //Create Handler to stop scanning
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) { //Check if BLE is supported
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show(); //Message that BLE not supported
             finish();                                                                   //End the app
         }
-        
+
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE); //Get the BluetoothManager
         mBluetoothAdapter = bluetoothManager.getAdapter();                              //Get a reference to the BluetoothAdapter (radio)
-        
+
         if (mBluetoothAdapter == null) {                                                //Check if we got the BluetoothAdapter
             Toast.makeText(this, R.string.bluetooth_not_supported, Toast.LENGTH_SHORT).show(); //Message that Bluetooth not supported
             finish();                                                                   //End the app
@@ -99,17 +116,17 @@ public class DeviceScanActivity extends ListActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);                  //Fire the intent to start the activity that will return a result based on user response
         }
 
-		mLeDeviceListAdapter = new LeDeviceListAdapter();                               //Create new list adapter to hold list of BLE devices found during scan
+        mLeDeviceListAdapter = new LeDeviceListAdapter();                               //Create new list adapter to hold list of BLE devices found during scan
         setListAdapter(mLeDeviceListAdapter);                                           //Bind our ListActivity to the new list adapter
 /*
         Set<BluetoothDevice> bondedSet = mBluetoothAdapter.getBondedDevices();          //Get list of bonded (paired) devices
         Log.d(TAG, "Bluetooth Bonded Set: " + bondedSet);
         if(bondedSet.size() > 0){
-            for(BluetoothDevice device : bondedSet){   
+            for(BluetoothDevice device : bondedSet){
             	mLeDeviceListAdapter.addDevice(device);                                 //Add bonded devices to list adapter
             }
         }
-*/        
+*/
         scanLeDevice(true);                                                             //Start scanning for BLE devices
     }
 
@@ -120,7 +137,7 @@ public class DeviceScanActivity extends ListActivity {
     protected void onPause() {
         super.onPause();
         scanLeDevice(false);                                                            //Stop scanning for BLE devices
-        mLeDeviceListAdapter.clear();                                                   //Clear the list of BLE devices found during the scan 
+        mLeDeviceListAdapter.clear();                                                   //Clear the list of BLE devices found during the scan
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -130,10 +147,9 @@ public class DeviceScanActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.scan_start_stop, menu);                        //Show the Options menu
         if (!mScanning) {                                                               //See if not scanning
-            menu.findItem(R.id.menu_stop).setVisible(false);                            //  hide Stop scan menu option 
+            menu.findItem(R.id.menu_stop).setVisible(false);                            //  hide Stop scan menu option
             menu.findItem(R.id.menu_scan).setVisible(true);                             //  and show Scan menu option
-        }
-        else {                                                                          //Else are scanning
+        } else {                                                                          //Else are scanning
             menu.findItem(R.id.menu_stop).setVisible(true);                             //  show Stop menu option
             menu.findItem(R.id.menu_scan).setVisible(false);                            //  and hide Scan menu option
             menu.findItem(R.id.menu_refresh).setActionView(R.layout.indeterminate_progress); //Show progress indicator on Action Bar
@@ -147,10 +163,10 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {                                                     //Get which menu item was selected
-	        case R.id.menu_scan:                                                        //Option to Scan chosen
-	            mLeDeviceListAdapter.clear();                                           //Clear list of BLE devices found
-	            scanLeDevice(true);                                                     //Start scanning
-	            break;
+            case R.id.menu_scan:                                                        //Option to Scan chosen
+                mLeDeviceListAdapter.clear();                                           //Clear list of BLE devices found
+                scanLeDevice(true);                                                     //Start scanning
+                break;
             case R.id.menu_stop:                                                        //Option to Stop scanning chosen
                 scanLeDevice(false);                                                    //Stop scanning
                 break;
@@ -171,13 +187,13 @@ public class DeviceScanActivity extends ListActivity {
 
     // ----------------------------------------------------------------------------------------------------------------
     // Device selected in list adapter
-    // Start DeviceControlActivity and pass the BLE device name and address to the activity 
+    // Start DeviceControlActivity and pass the BLE device name and address to the activity
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);        //Get the Bluetooth device from the list adapter
         if (device == null)                                                             //Ignore if device is not valid
             return;
-        final Intent intent = new Intent(this, DeviceControlActivity.class);            //Create Intent to start the DeviceControlActivity 
+        final Intent intent = new Intent(this, DeviceControlActivity.class);            //Create Intent to start the DeviceControlActivity
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());    //Add BLE device name to the intent (for info, not needed)
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress()); //Add BLE device address to the intent
         if (mScanning) {                                                                //See if still scanning
@@ -203,9 +219,8 @@ public class DeviceScanActivity extends ListActivity {
             }, SCAN_PERIOD);
 
             mScanning = true;                                                           //Indicate that we are busy scanning - used for menu Stop/Scan context
-            mBluetoothAdapter.startLeScan(mLeScanCallback);                             //Start scanning with callback method to execute when a new BLE device is found 
-        }
-        else {                                                                          //Method was called with option to stop scanning
+            mBluetoothAdapter.startLeScan(mLeScanCallback);                             //Start scanning with callback method to execute when a new BLE device is found
+        } else {                                                                          //Method was called with option to stop scanning
             mScanning = false;                                                          //Indicate that we are not scanning - used for menu Stop/Scan context
             mBluetoothAdapter.stopLeScan(mLeScanCallback);                              //Stop scanning - callback method indicates which scan to stop
         }
@@ -213,21 +228,11 @@ public class DeviceScanActivity extends ListActivity {
     }
 
     // ----------------------------------------------------------------------------------------------------------------
-    // Device scan callback. Bluetooth adapter calls this method when a new device is discovered during a scan.
-    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) { //Android calls method with Bluetooth device advertising information
-            runOnUiThread(new Runnable() {                                              //Create runnable that will add the device to the list adapter
-                @Override
-                public void run() {
-                    mLeDeviceListAdapter.addDevice(device);                             //Add the device to the list adapter that will show all the available devices 
-                    Log.d(TAG, "Found BLE Device: " + device.getAddress().toString() ); //Debug information to log the devices as they are found
-                    mLeDeviceListAdapter.notifyDataSetChanged();                        //Tell the list adapter that it needs to refresh the view
-                }
-            });
-        }
-    };
+    // Class to hold device name and address
+    static class ViewHolder {
+        TextView deviceName;                                                            //TextView to show device name in the list on the screen
+        TextView deviceAddress;                                                         //TextView to show device address in the list on the screen
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Adapter for holding devices found through scanning. Acts as a bridge between the list data and the view deiplaying the data
@@ -238,11 +243,11 @@ public class DeviceScanActivity extends ListActivity {
         public LeDeviceListAdapter() {                                                  //Constructor initializes the list
             super();
             mLeDevices = new ArrayList<BluetoothDevice>();                              //New arrayliat to hold the Bluetooth devices
-            mInflator = DeviceScanActivity.this.getLayoutInflater();                    //Get the layout inflator associated with this activity 
+            mInflator = DeviceScanActivity.this.getLayoutInflater();                    //Get the layout inflator associated with this activity
         }
 
         public void addDevice(BluetoothDevice device) {                                 //Method to add device to list
-            if(!mLeDevices.contains(device)) {                                          //First check that it is a new device not in the list
+            if (!mLeDevices.contains(device)) {                                          //First check that it is a new device not in the list
                 mLeDevices.add(device);                                                 //Add the device to the list
             }
         }
@@ -274,14 +279,13 @@ public class DeviceScanActivity extends ListActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {                    //Method to get view of device and show on the screen
             ViewHolder viewHolder;                                                      //Declare the structure to hold TextViews to show the name and address that will be displayed
             // General ListView optimization code.
-            if (view == null) {                                                         //Check that we were passed a reference for a new view 
+            if (view == null) {                                                         //Check that we were passed a reference for a new view
                 view = mInflator.inflate(R.layout.listitem_device, null);               //Put the list item (from XML layout file) on the screen
                 viewHolder = new ViewHolder();                                          //New object to hold references to which TextViews hold the name and address of the device
-                viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address); //Get reference to TextView for the address 
+                viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address); //Get reference to TextView for the address
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name); //Get reference to TextView for the name
                 view.setTag(viewHolder);                                                //Tag the view with the ViewHolder
-            }
-            else {
+            } else {
                 viewHolder = (ViewHolder) view.getTag();                                //View already exists so get the ViewHolder that was used tag the view
             }
 
@@ -289,19 +293,11 @@ public class DeviceScanActivity extends ListActivity {
             final String deviceName = device.getName();                                 //Get the name of the device
             if (deviceName != null && deviceName.length() > 0) {                        //Check that the name is valid (name is not required in the BLE advertising packet)
                 viewHolder.deviceName.setText(deviceName);                              //If so show it on the screen in the TextView
-            }
-            else {
+            } else {
                 viewHolder.deviceName.setText(R.string.unknown_device);                 //If name is invalid, put "Unknown Device" on the screen
             }                                                                           //(this happens if the advertisement packet does not contain a name)
             viewHolder.deviceAddress.setText(device.getAddress());                      //Print the MAC address on the screen
             return view;
         }
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Class to hold device name and address
-    static class ViewHolder {
-        TextView deviceName;                                                            //TextView to show device name in the list on the screen
-        TextView deviceAddress;                                                         //TextView to show device address in the list on the screen
     }
 }
