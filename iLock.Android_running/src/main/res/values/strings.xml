@@ -1,0 +1,61 @@
+<resources>
+	<string name="app_name">iLock</string>
+
+	<string name="number_one">1</string>
+	<string name="number_two">2</string>
+	<string name="number_three">3</string>
+	<string name="number_four">4</string>
+	<string name="number_five">5</string>
+	<string name="number_six">6</string>
+	<string name="number_seven">7</string>
+	<string name="number_eight">8</string>
+	<string name="number_nine">9</string>
+	<string name="anti_theft_keyboard_star">*</string>
+	<string name="number_zero">0</string>
+	<string name="text_al">AL</string>
+	<string name="tv_connections">Connections</string>
+	<string name="tv_newlock">Add New Lock</string>
+	<string name="tv_enrolledLocks">My Locks</string>
+	<string name="tv_codes">Codes</string>
+	<string name="tv_enter_pw1">Enter Password 1</string>
+	<string name="tv_enter_pw2">Enter Password 2</string>
+	<string name="tv_features">Features</string>
+	<string name="tv_enable_remotekeypad">Enable Remote Keypad</string>
+	<string name="tv_closeonunlock">Close On Unlock</string>
+	<string name="tv_conattm_duration">Connect Attempt Duration</string>
+	<string name="choose">choose</string>
+	<string name="tv_appearance">Appearance</string>
+	<string-array name="conAttmpDuration">
+		<item>1m</item>
+		<item>5m</item>
+		<item>10m</item>
+		<item>15m</item>
+	</string-array>
+	<string name="title_activity_add_lock">Add a New Lock</string>
+	<string name="title_activity_base">BaseActivity</string>
+	<string name="addlock_instruction">Please input the lock\'s name to show and the corresponding password of that lock to control.</string>
+	<string name="addlock_enter_name">Enter the lock\'s name</string>
+	<string name="addlock_hint_nametoshow">Lock\'s name to show</string>
+	<string name="addlock_enter_pass">Enter a password</string>
+	<string name="addlock_pass_instruction">This password will be used to create a secure communication between your mobile device and the lock</string>
+	<string name="addlock_savepassphrase">Save My Password</string>
+	<string name="addlock_savepass_hint">If you uncheck this box, system will ask for this password every time you try to send a command to the lock</string>
+	<string name="addlock_enable_keypad">Enable Keypad mode</string>
+	<string name="settings_battery_status">Battery Status</string>
+	<string name="title_activity_battery_status">Battery Status</string>
+	<string name="title_activity_lock_list">Finding Lock</string>
+	<string name="action_settings">Settings</string>
+	<string name="opUnattended">Unlock when in Range</string>
+	<string-array name="unattendedTimeoutList">
+		<item>1 minute</item>
+		<item>2 minutes</item>
+		<item>3 minutes</item>
+		<item>4 minutes</item>
+		<item>5 minutes</item>
+		<item>6 minutes</item>
+		<item>7 minutes</item>
+		<item>8 minutes</item>
+		<item>9 minutes</item>
+		<item>10 minutes</item>
+	</string-array>
+</resources>

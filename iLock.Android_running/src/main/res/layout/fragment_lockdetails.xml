@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.napcosecurity.android.ilock.ui.fragments.LockDetails">
+
+    <ImageView
+        android:id="@+id/status_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_locked"/>
+
+
+    <Button
+        android:id="@+id/btn_status_switcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status_indicator"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/frag_btn_back"
+        android:gravity="center"
+        android:padding="24dp"
+        android:textColor="@color/actionbar_background"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <ImageButton
+        android:id="@+id/btn_lock_keypad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/abc_button_padding_horizontal_material"
+        android:layout_marginEnd="@dimen/abc_button_padding_horizontal_material"
+        android:layout_marginRight="@dimen/abc_button_padding_horizontal_material"
+        android:background="#00000000"
+        android:src="@drawable/ic_keypad"/>
+</RelativeLayout>

@@ -128,7 +128,7 @@ public class BluetoothLeService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         if (mBluetoothGatt != null) {                                                   //Check for existing BluetoothGatt connection
-            mBluetoothGatt.close();                                                     //Close BluetoothGatt coonection for proper cleanup
+           mBluetoothGatt.close();                                                     //Close BluetoothGatt coonection for proper cleanup
             mBluetoothGatt = null;                                                      //No longer have a BluetoothGatt connection
         }
         return super.onUnbind(intent);
@@ -137,7 +137,7 @@ public class BluetoothLeService extends Service {
     // ----------------------------------------------------------------------------------------------------------------
     // Broadcast an intent with a string representing an action
     private void broadcastUpdate(final String action) {
-        final Intent intent = new Intent(action);                                       //Create new intent to broadcast the action
+        final Intent intent = new Intent(action);                                  //Create new intent to broadcast the action
         sendBroadcast(intent);                                                          //Broadcast the intent
     }
 

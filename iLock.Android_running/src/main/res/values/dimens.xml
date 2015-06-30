@@ -1,0 +1,12 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="keyboard_corner_padding">5dp</dimen>
+    <dimen name="stat_back_border">3dp</dimen>
+    <dimen name="frag_btn_corner">3dp</dimen>
+    <dimen name="footer_btn_padding">5dp</dimen>
+    <dimen name="tv_padding">12dp</dimen>
+    <dimen name="tv_padding2">6dp</dimen>
+    <dimen name="frag_status_switcher_top_margin">24dp</dimen>
+</resources>
