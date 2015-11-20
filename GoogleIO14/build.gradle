@@ -43,6 +43,7 @@ android {
             dirs.each { dir ->
                 java.srcDirs "src/${dir}/java"
                 res.srcDirs "src/${dir}/res"
+
             }
         }
         androidTest.setRoot('tests')
