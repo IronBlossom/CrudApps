@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">KeypadProject</string>
+    <string name="action_settings">Settings</string>
+
+
+    <item name="zero" format="integer" type="id">0</item>
+    <item name="one" format="integer" type="id">1</item>
+    <item name="two" format="integer" type="id">2</item>
+    <item name="three" format="integer" type="id">3</item>
+    <item name="four" format="integer" type="id">4</item>
+    <item name="five" format="integer" type="id">5</item>
+    <item name="six" format="integer" type="id">6</item>
+    <item name="seven" format="integer" type="id">7</item>
+    <item name="eight" format="integer" type="id">8</item>
+    <item name="nine" format="integer" type="id">9</item>
+    <item name="asteriskSign" format="string" type="id">*</item>
+    <item name="numberSign" format="string" type="id">#</item>
+
+    <string name="zero">0</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="asteriskSign">*</string>
+    <string name="numberSign">#</string>
+</resources>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="9.5"
+        android:background="@drawable/lay_background_lcd"
+        android:padding="@dimen/generic_padding">
+
+        <TextView
+            android:id="@+id/tvInputLine1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="start"
+            android:maxLength="16"
+            android:maxLines="1"
+            android:text="0123456789012345"
+            android:textSize="37sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvInputLine2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvInputLine1"
+            android:gravity="end"
+            android:maxLength="16"
+            android:maxLines="1"
+            android:text="5432109876543210"
+            android:textSize="37sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivLedCheckMark"
+            android:layout_width="@dimen/ledWidth"
+            android:layout_height="@dimen/ledWidth"
+            android:layout_gravity="end"
+            android:src="@drawable/iv_checkmark_anim" />
+
+        <ImageView
+            android:id="@+id/ivLedLock"
+            android:layout_width="@dimen/ledWidth"
+            android:layout_height="@dimen/ledWidth"
+            android:layout_gravity="end"
+            android:src="@drawable/iv_lock_anim" />
+
+        <ImageView
+            android:id="@+id/ivLedWarning"
+            android:layout_width="@dimen/ledWidth"
+            android:layout_height="@dimen/ledWidth"
+            android:layout_gravity="end"
+            android:src="@drawable/iv_warning_anim" />
+
+        <ImageView
+            android:id="@+id/ivLedAC"
+            android:layout_width="@dimen/ledWidth"
+            android:layout_height="@dimen/ledWidth"
+            android:layout_gravity="end"
+            android:src="@drawable/iv_ac_anim" />
+    </LinearLayout>
+</LinearLayout>

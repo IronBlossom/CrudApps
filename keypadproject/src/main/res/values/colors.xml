@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F8F8F8</color>
+    <color name="colorPrimaryDark">#9a9a9a</color>
+    <color name="colorAccent">#dab863</color>
+    <color name="colorCircleBtnBorder">#805021</color>
+    <color name="colorBtnText">#805021</color>
+    <color name="colorLcdBorder">#815123</color>
+    <color name="colorLcdBackground">#fff5ee</color>
+    <color name="colorKeypadBorder">#d3d3d3</color>
+    <color name="colorKeypadBackground">#f0f0f0</color>
+    <color name="colorBtnBackgroundNormal">#ffffff</color>
+    <color name="colorBtnBackgroundPressed">#815123</color>
+    <color name="colorBtnRipple">#fff5ef</color>
+
+</resources>

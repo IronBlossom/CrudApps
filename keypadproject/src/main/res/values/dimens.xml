@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="generic_padding">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="radiusCorner">5dp</dimen>
+    <dimen name="lcdBorderWidth">2dp</dimen>
+    <dimen name="ledWidth">24dp</dimen>
+    <dimen name="numericKeyVerticalMargin">1dp</dimen>
+    <dimen name="numericKeyHorizontalMargin">12dp</dimen>
+    <dimen name="controlKeyMargin">1dp</dimen>
+</resources>
