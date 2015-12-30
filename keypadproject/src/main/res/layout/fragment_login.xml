@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="end|center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/generic_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <com.example.imamin.keypadproject.InstantAutoComplete
+            android:id="@+id/autoTvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_background"
+            android:hint="Username"
+            android:imeOptions="actionNext|flagNoExtractUi"
+            android:maxLines="1"
+            android:padding="@dimen/generic_padding"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/generic_padding"
+            android:layout_marginStart="@dimen/generic_padding"
+            android:layout_weight="1"
+            android:background="@drawable/btn_background"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone|flagNoExtractUi"
+            android:maxLines="1"
+            android:padding="@dimen/generic_padding" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <RadioGroup
+            android:id="@+id/rgKeypadSelector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:checkedButton="@+id/rbKeypad1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioButton
+                android:id="@+id/rbKeypad1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|left|center_vertical"
+                android:text="Keypad 1" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|left|center_vertical"
+                android:text="Keypad 2" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            style="@android:style/Widget.DeviceDefault.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Submit" />
+
+    </LinearLayout>
+
+</LinearLayout>

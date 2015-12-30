@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/generic_padding"
+    android:background="@drawable/lay_background_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/generic_padding"
+    android:weightSum="10">
+
+    <include
+        layout="@layout/chunk_keypad2_indicator"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="@dimen/generic_padding"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:weightSum="15">
+
+        <include
+            layout="@layout/chunk_lcd_display2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/generic_padding" />
+
+        <include
+            layout="@layout/chunk_keypad2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+    </LinearLayout>
+</LinearLayout>

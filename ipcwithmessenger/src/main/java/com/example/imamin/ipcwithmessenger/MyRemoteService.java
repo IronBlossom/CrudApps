@@ -26,7 +26,6 @@ import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 public class MyRemoteService extends Service {
-    public static final int MSG_FROM_SERVICE = 0x8888;
     public static final int MSG_FROM_SERVICE_UNLOCKED = 0x1122;
     public static final int MSG_FROM_SERVICE_DISCONNECTED = 0x2211;
     public static final int MSG_FROM_SERVICE_FAILED = 0x2121;
@@ -92,11 +91,6 @@ public class MyRemoteService extends Service {
                     super.handleMessage(msg);
 
             }
-        }
-
-        @Override
-        public void dispatchMessage(Message msg) {
-            super.dispatchMessage(msg);
         }
     }
 

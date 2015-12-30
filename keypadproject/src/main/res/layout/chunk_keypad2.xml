@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@drawable/lay_background_keypad"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:padding="@dimen/generic_padding"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:background="@drawable/lay_background_keypad2_control"
+        android:orientation="vertical"
+        android:padding="@dimen/lcdBorderWidth"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/btnKeypadAway"
+            style="@style/controlKey2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Away" />
+
+        <Button
+            android:id="@+id/btnKeypadStay"
+            style="@style/controlKey2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Stay" />
+
+        <Button
+            android:id="@+id/btnKeypadLights"
+            style="@style/controlKey2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Lights" />
+
+        <Button
+            android:id="@+id/btnKeypadAux"
+            style="@style/controlKey2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Aux" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:columnCount="3"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@id/one"
+                style="@style/numericKey2"
+                android:text="@string/one" />
+
+            <Button
+                android:id="@id/two"
+                style="@style/numericKey2"
+                android:text="@string/two" />
+
+            <Button
+                android:id="@id/three"
+                style="@style/numericKey2"
+                android:text="@string/three" />
+
+            <Button
+                android:id="@id/four"
+                style="@style/numericKey2"
+                android:text="@string/four" />
+
+            <Button
+                android:id="@id/five"
+                style="@style/numericKey2"
+                android:text="@string/five" />
+
+            <Button
+                android:id="@id/six"
+                style="@style/numericKey2"
+                android:text="@string/six" />
+
+            <Button
+                android:id="@id/seven"
+                style="@style/numericKey2"
+                android:text="@string/seven" />
+
+            <Button
+                android:id="@id/eight"
+                style="@style/numericKey2"
+                android:text="@string/eight" />
+
+            <Button
+                android:id="@id/nine"
+                style="@style/numericKey2"
+                android:text="@string/nine" />
+
+            <Button
+                android:id="@id/asteriskSign"
+                style="@style/numericKey2"
+                android:text="@string/asteriskSign" />
+
+            <Button
+                android:id="@id/zero"
+                style="@style/numericKey2"
+                android:text="@string/zero" />
+
+            <Button
+                android:id="@id/numberSign"
+                style="@style/numericKey2"
+                android:text="@string/numberSign" />
+        </GridLayout>
+    </RelativeLayout>
+</LinearLayout>

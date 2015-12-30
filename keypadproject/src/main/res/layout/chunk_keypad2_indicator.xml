@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/circleBtnRadius"
+            android:layout_height="@dimen/circleBtnRadius"
+            android:background="@drawable/btn_circle_background"
+            android:paddingTop="0dp"
+            android:text="\u2190"
+            android:textColor="@color/tv_state_color"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/lay_background_parent"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/indicatorKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|left"
+                android:layout_weight="2"
+                android:text="Armed" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_gravity="end|right"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/eliptical_led_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/indicatorKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|left"
+                android:layout_weight="2"
+                android:text="Ready" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+
+                android:layout_gravity="end|right"
+                android:layout_weight="1"
+
+                android:scaleType="fitXY"
+                android:src="@drawable/eliptical_led_green" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/indicatorKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|left"
+                android:layout_weight="2"
+                android:text="Message" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_gravity="end|right"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/eliptical_led_red" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/indicatorKey"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|left"
+                android:layout_weight="2"
+                android:text="Mic" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_gravity="end|right"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/eliptical_led_gray" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

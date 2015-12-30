@@ -17,25 +17,53 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="numericKey" parent="Widget.AppCompat.Button">
+    <style name="numericKey1" parent="Widget.AppCompat.Button">
         <item name="android:layout_height">43dp</item>
         <item name="android:onClick">onNumericKeyPressed</item>
         <item name="android:background">@drawable/btn_background</item>
-        <item name="android:layout_marginTop">@dimen/numericKeyVerticalMargin</item>
-        <item name="android:layout_marginBottom">@dimen/numericKeyVerticalMargin</item>
-        <item name="android:layout_marginRight">@dimen/numericKeyHorizontalMargin</item>
-        <item name="android:layout_marginLeft">@dimen/numericKeyHorizontalMargin</item>
+        <item name="android:layout_marginTop">@dimen/numericKey1VerticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/numericKey1VerticalMargin</item>
+        <item name="android:layout_marginRight">@dimen/numericKey1HorizontalMargin</item>
+        <item name="android:layout_marginLeft">@dimen/numericKey1HorizontalMargin</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/tv_state_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="controlKey" parent="Widget.AppCompat.Button">
+    <style name="controlKey1" parent="Widget.AppCompat.Button">
         <item name="android:onClick">onControlKeyPressed</item>
         <item name="android:background">@drawable/btn_background</item>
-        <item name="android:layout_margin">@dimen/controlKeyMargin</item>
+        <item name="android:layout_margin">@dimen/controlKey1Margin</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/tv_state_color</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="numericKey2" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">43dp</item>
+        <item name="android:onClick">onNumericKeyPressed</item>
+        <item name="android:background">@drawable/btn_background</item>
+        <item name="android:layout_marginTop">@dimen/numericKey2VerticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/numericKey2VerticalMargin</item>
+        <item name="android:layout_marginRight">@dimen/numericKey2HorizontalMargin</item>
+        <item name="android:layout_marginLeft">@dimen/numericKey2HorizontalMargin</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/tv_state_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="controlKey2" parent="Widget.AppCompat.Button">
+        <item name="android:onClick">onControlKeyPressed</item>
+        <item name="android:background">@drawable/btn_background</item>
+        <item name="android:layout_margin">@dimen/controlKey2Margin</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/tv_state_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="indicatorKey" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">end|right</item>
     </style>
 </resources>

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:background="@drawable/lay_background_keypad"
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:padding="@dimen/generic_padding"
-    android:weightSum="10"
-    tools:context=".MainActivity">
+    android:weightSum="10">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,7 +23,7 @@
             android:weightSum="2">
 
             <Button
-                style="@style/controlKey"
+                style="@style/controlKey1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -33,7 +31,7 @@
                 android:textSize="20sp" />
 
             <Button
-                style="@style/controlKey"
+                style="@style/controlKey1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -43,7 +41,7 @@
 
         <Button
             android:id="@+id/btnKeypadFire"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -51,7 +49,7 @@
 
         <Button
             android:id="@+id/btnKeypadWarning"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -59,7 +57,7 @@
 
         <Button
             android:id="@+id/btnKeypadShield"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -80,62 +78,62 @@
 
             <Button
                 android:id="@id/one"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/one" />
 
             <Button
                 android:id="@id/two"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/two" />
 
             <Button
                 android:id="@id/three"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/three" />
 
             <Button
                 android:id="@id/four"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/four" />
 
             <Button
                 android:id="@id/five"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/five" />
 
             <Button
                 android:id="@id/six"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/six" />
 
             <Button
                 android:id="@id/seven"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/seven" />
 
             <Button
                 android:id="@id/eight"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/eight" />
 
             <Button
                 android:id="@id/nine"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/nine" />
 
             <Button
                 android:id="@id/asteriskSign"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/asteriskSign" />
 
             <Button
                 android:id="@id/zero"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/zero" />
 
             <Button
                 android:id="@id/numberSign"
-                style="@style/numericKey"
+                style="@style/numericKey1"
                 android:text="@string/numberSign" />
         </GridLayout>
     </RelativeLayout>
@@ -150,7 +148,7 @@
 
         <Button
             android:id="@+id/btnKeypadStay"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -159,7 +157,7 @@
 
         <Button
             android:id="@+id/btnKeypadAway"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -168,7 +166,7 @@
 
         <Button
             android:id="@+id/btnKeypadChime"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -177,7 +175,7 @@
 
         <Button
             android:id="@+id/btnKeypadReset"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -186,7 +184,7 @@
 
         <Button
             android:id="@+id/btnKeypadExit"
-            style="@style/controlKey"
+            style="@style/controlKey1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

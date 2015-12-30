@@ -77,9 +77,6 @@ public class MainActivity extends Activity {
             final MainActivity activity = activityWeakReference.get();
             if(activity!=null){
                 switch (msg.what) {
-                    case MyRemoteService.MSG_FROM_SERVICE:
-                        //TODO
-                        break;
                     case MyRemoteService.MSG_FROM_SERVICE_STATUS:
                         Bundle data = msg.getData();
                         activity.sharedPreferences.edit().putBoolean("activityServiceRunning", ((boolean) data.get("serviceRunning"))).apply();

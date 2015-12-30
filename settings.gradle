@@ -1,13 +1,17 @@
-include ':iLockServiceExp', ':ipcwithmessenger'
-//include ':blemultiservicedemo'
-//include 'BLEClient', ':iLock.Android_0.0.12'
-//include 'BLESample'
-//include 'BluetoothGatt'
-include /*'BluetoothLeGatt',*/ ':iLock.Android_Experimental'
-////include  'PDFRenderer'
-////include 'CSEMock'
-////include 'NDKSample'
+/*ILOCK RELATED*/
+//include ':iLockServiceExp', ':ipcwithmessenger',':iLock.Android_Experimental'
+
+/*NAPCO SUGGESTED */
+include ':keypadproject'
+
+/*BLE RELATED*/
+//include ':blemultiservicedemo','BLEClient','BluetoothGatt','BluetoothLeGatt','BLESample'
+
+/*OTHERS STUFFZ*/
+//include  'PDFRenderer'
+//include 'CSEMock'
+//include 'NDKSample'
 //include ':rN4020DiewithService'
 //include ':explorer16MLDP'
 //include '/Android M Preview Samples/RuntimePermission'
-//include ':iLock.Android_running', ':cameraforocr', ':myapplication'//, ':JobScheduler_API22', ':RepeatingAlarm_fromAPI22Sample'
+//include ':cameraforocr', ':myapplication'//, ':JobScheduler_API22', ':RepeatingAlarm_fromAPI22Sample'

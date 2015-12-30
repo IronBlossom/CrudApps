@@ -5,7 +5,11 @@
     <dimen name="radiusCorner">5dp</dimen>
     <dimen name="lcdBorderWidth">2dp</dimen>
     <dimen name="ledWidth">24dp</dimen>
-    <dimen name="numericKeyVerticalMargin">1dp</dimen>
-    <dimen name="numericKeyHorizontalMargin">12dp</dimen>
-    <dimen name="controlKeyMargin">1dp</dimen>
+    <dimen name="numericKey1VerticalMargin">1dp</dimen>
+    <dimen name="numericKey1HorizontalMargin">12dp</dimen>
+    <dimen name="numericKey2VerticalMargin">1dp</dimen>
+    <dimen name="numericKey2HorizontalMargin">6dp</dimen>
+    <dimen name="controlKey1Margin">1dp</dimen>
+    <dimen name="controlKey2Margin">2dp</dimen>
+    <dimen name="circleBtnRadius">32dp</dimen>
 </resources>

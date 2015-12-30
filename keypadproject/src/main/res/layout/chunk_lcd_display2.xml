@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@drawable/lay_background_lcd"
+    android:padding="@dimen/generic_padding">
+
+    <TextView
+        android:id="@+id/tvInputLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="start"
+        android:maxLength="16"
+        android:maxLines="1"
+        android:text="0123456789012345"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvInputLine2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="end"
+        android:maxLength="16"
+        android:maxLines="1"
+        android:text="5432109876543210"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
