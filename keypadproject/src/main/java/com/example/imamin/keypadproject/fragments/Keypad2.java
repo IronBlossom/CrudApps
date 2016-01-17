@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.example.imamin.keypadproject.MainActivity;
 import com.example.imamin.keypadproject.OptimizedTypeface;
 import com.example.imamin.keypadproject.R;
-import com.example.imamin.keypadproject.controllers.OnControlKeyPressedListener;
-import com.example.imamin.keypadproject.controllers.OnNumericKeyPressedListener;
+import com.example.imamin.keypadproject.uicontrollers.OnControlKeyPressedListener;
+import com.example.imamin.keypadproject.uicontrollers.OnNumericKeyPressedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

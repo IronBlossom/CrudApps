@@ -1,16 +1,18 @@
 package com.example.imamin.keypadproject;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.example.imamin.keypadproject.controllers.OnControlKeyPressedListener;
-import com.example.imamin.keypadproject.controllers.OnNumericKeyPressedListener;
+import com.example.imamin.keypadproject.net.TCPSocket;
+import com.example.imamin.keypadproject.uicontrollers.OnControlKeyPressedListener;
+import com.example.imamin.keypadproject.uicontrollers.OnNumericKeyPressedListener;
 import com.example.imamin.keypadproject.fragments.Keypad1;
 import com.example.imamin.keypadproject.fragments.Keypad2;
 import com.example.imamin.keypadproject.fragments.Login;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     //    public static boolean submitDone = false;
@@ -29,6 +31,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSuccessfulLogin(boolean isKeypad1) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TCPSocket tcpSocket = new TCPSocket();
+                try {
+                    String s = tcpSocket.readMessageFromServer("172.16.205.157", "11000");
+                    Log.v("Message", "=" + s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
 
         if (isKeypad1) {
             keypad1 = new Keypad1();
@@ -51,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         onControlKeyPressedListener.onControlKeyPressed(view.getId());
     }
 
-    public void onBackButtonPressed(){
+    public void onBackButtonPressed() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login()).commit();
 
     }

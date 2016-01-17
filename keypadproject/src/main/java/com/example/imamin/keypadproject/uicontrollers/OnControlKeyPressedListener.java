@@ -1,4 +1,4 @@
-package com.example.imamin.keypadproject.controllers;
+package com.example.imamin.keypadproject.uicontrollers;
 
 /**
  * Created by imamin on 12/23/2015.
